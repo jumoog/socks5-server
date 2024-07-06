@@ -5,7 +5,7 @@ import (
 
 	"context"
 
-	"jumoog/socks5-server/socks5"
+	"jumoog/socks5-server/go-socks5"
 )
 
 // PermitDestAddrPattern returns a RuleSet which selectively allows addresses

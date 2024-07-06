@@ -5,7 +5,7 @@ import (
 	"net/netip"
 	"os"
 
-	"jumoog/socks5-server/socks5"
+	"jumoog/socks5-server/go-socks5"
 
 	"github.com/caarlos0/env/v11"
 )
