@@ -2,7 +2,7 @@ package main
 
 import (
 	"log"
-	"net"
+	"net/netip"
 	"os"
 
 	"github.com/armon/go-socks5"
@@ -10,11 +10,11 @@ import (
 )
 
 type params struct {
-	User            string    `env:"PROXY_USER" envDefault:""`
-	Password        string    `env:"PROXY_PASSWORD" envDefault:""`
-	Port            string    `env:"PROXY_PORT" envDefault:"1080"`
-	AllowedDestFqdn string    `env:"ALLOWED_DEST_FQDN" envDefault:""`
-	AllowedIPs      []string  `env:"ALLOWED_IPS" envSeparator:"," envDefault:""`
+	User            string   `env:"PROXY_USER" envDefault:""`
+	Password        string   `env:"PROXY_PASSWORD" envDefault:""`
+	Port            string   `env:"PROXY_PORT" envDefault:"1080"`
+	AllowedDestFqdn string   `env:"ALLOWED_DEST_FQDN" envDefault:""`
+	AllowedIPs      []string `env:"ALLOWED_IPS" envSeparator:"," envDefault:""`
 }
 
 func main() {
@@ -49,9 +49,9 @@ func main() {
 
 	// Set IP whitelist
 	if len(cfg.AllowedIPs) > 0 {
-		whitelist := make([]net.IP, len(cfg.AllowedIPs))
+		whitelist := make([]netip.Addr, len(cfg.AllowedIPs))
 		for i, ip := range cfg.AllowedIPs {
-			whitelist[i] = net.ParseIP(ip)
+			whitelist[i], _ = netip.ParseAddr(ip)
 		}
 		server.SetIPWhitelist(whitelist)
 	}
