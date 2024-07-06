@@ -5,8 +5,9 @@ import (
 	"net/netip"
 	"os"
 
-	"github.com/armon/go-socks5"
-	"github.com/caarlos0/env/v6"
+	"jumoog/socks5-server/socks5"
+
+	"github.com/caarlos0/env/v11"
 )
 
 type params struct {

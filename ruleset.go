@@ -5,7 +5,7 @@ import (
 
 	"context"
 
-	"github.com/armon/go-socks5"
+	"jumoog/socks5-server/socks5"
 )
 
 // PermitDestAddrPattern returns a RuleSet which selectively allows addresses
