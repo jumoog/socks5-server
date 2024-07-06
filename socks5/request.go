@@ -32,7 +32,7 @@ const (
 )
 
 var (
-	unrecognizedAddrType = fmt.Errorf("unrecognized address type")
+	ErrUnrecognizedAddrType = fmt.Errorf("unrecognized address type")
 )
 
 // AddressRewriter is used to rewrite a destination transparently
@@ -291,7 +291,7 @@ func readAddrSpec(r io.Reader) (*AddrSpec, error) {
 		d.FQDN = string(fqdn)
 
 	default:
-		return nil, unrecognizedAddrType
+		return nil, ErrUnrecognizedAddrType
 	}
 
 	// Read the port

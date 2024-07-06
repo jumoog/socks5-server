@@ -179,7 +179,7 @@ func (s *Server) ServeConn(conn net.Conn) error {
 
 	request, err := NewRequest(bufConn)
 	if err != nil {
-		if err == unrecognizedAddrType {
+		if err == ErrUnrecognizedAddrType {
 			if err := sendReply(conn, addrTypeNotSupported, nil); err != nil {
 				return fmt.Errorf("failed to send reply: %v", err)
 			}
