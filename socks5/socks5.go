@@ -146,8 +146,10 @@ func (s *Server) ServeConn(conn net.Conn) error {
 		return err
 	}
 	ip, _ := netip.ParseAddr(string(clientIP))
-	if s.isIPAllowed(ip) || s.IsClassBPrivate(ip) {
-		s.config.Logger.Printf("[INFO] socks: Connection from allowed IP address: %s", clientIP)
+	if s.IsDockerNetwork(ip) {
+		s.config.Logger.Printf("[INFO] socks: Connection from Docker IP address: %s", clientIP)
+	} else if s.isIPAllowed(ip) {
+		s.config.Logger.Printf("[INFO] socks: Connection from allowed address: %s", clientIP)
 	} else {
 		s.config.Logger.Printf("[WARN] socks: Connection from not allowed IP address: %s", clientIP)
 		return fmt.Errorf("connection from not allowed IP address")
@@ -200,7 +202,7 @@ func (s *Server) ServeConn(conn net.Conn) error {
 	return nil
 }
 
-func (s *Server) IsClassBPrivate(ip netip.Addr) bool {
+func (s *Server) IsDockerNetwork(ip netip.Addr) bool {
 	if !ip.IsValid() || !ip.Is4() {
 		return false
 	}
