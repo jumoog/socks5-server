@@ -148,6 +148,8 @@ func (s *Server) ServeConn(conn net.Conn) error {
 	ip, _ := netip.ParseAddr(string(clientIP))
 	if s.IsDockerNetwork(ip) {
 		s.config.Logger.Printf("[INFO] socks: Connection from Docker IP address: %s", clientIP)
+	} else if s.IsTailScale(ip) {
+		s.config.Logger.Printf("[INFO] socks: Connection from Docker IP address: %s", clientIP)
 	} else if s.isIPAllowed(ip) {
 		s.config.Logger.Printf("[INFO] socks: Connection from allowed address: %s", clientIP)
 	} else {
@@ -212,4 +214,16 @@ func (s *Server) IsDockerNetwork(ip netip.Addr) bool {
 	classBPrivateEnd := netip.MustParseAddr("172.31.255.255")
 
 	return ip.Compare(classBPrivateStart) >= 0 && ip.Compare(classBPrivateEnd) <= 0
+}
+
+func (s *Server) IsTailScale(ip netip.Addr) bool {
+	if !ip.IsValid() || !ip.Is4() {
+		return false
+	}
+
+	// CGNAT range: 100.64.0.0 - 100.127.255.255
+	classCGNATPrivateStart := netip.MustParseAddr("100.64.0.0")
+	classCGNATPrivateEnd := netip.MustParseAddr("100.127.255.255")
+
+	return ip.Compare(classCGNATPrivateStart) >= 0 && ip.Compare(classCGNATPrivateEnd) <= 0
 }
