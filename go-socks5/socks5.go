@@ -209,11 +209,10 @@ func (s *Server) IsDockerNetwork(ip netip.Addr) bool {
 		return false
 	}
 
-	// Class B private range: 172.16.0.0 - 172.31.255.255
-	classBPrivateStart := netip.MustParseAddr("172.16.0.0")
-	classBPrivateEnd := netip.MustParseAddr("172.31.255.255")
+	// Class B private range in CIDR notation: 172.16.0.0/12
+	classBCIDR := netip.MustParsePrefix("172.16.0.0/12")
 
-	return ip.Compare(classBPrivateStart) >= 0 && ip.Compare(classBPrivateEnd) <= 0
+	return classBCIDR.Contains(ip)
 }
 
 func (s *Server) IsTailScale(ip netip.Addr) bool {
@@ -221,9 +220,8 @@ func (s *Server) IsTailScale(ip netip.Addr) bool {
 		return false
 	}
 
-	// CGNAT range: 100.64.0.0 - 100.127.255.255
-	classCGNATPrivateStart := netip.MustParseAddr("100.64.0.0")
-	classCGNATPrivateEnd := netip.MustParseAddr("100.127.255.255")
+	// CGNAT range in CIDR notation: 100.64.0.0/10
+	cgnatCIDR := netip.MustParsePrefix("100.64.0.0/10")
 
-	return ip.Compare(classCGNATPrivateStart) >= 0 && ip.Compare(classCGNATPrivateEnd) <= 0
+	return cgnatCIDR.Contains(ip)
 }
