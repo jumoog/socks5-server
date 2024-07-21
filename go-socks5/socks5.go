@@ -96,7 +96,7 @@ func New(conf *Config) (*Server, error) {
 
 	// Set default IP whitelist function
 	server.isIPAllowed = func(ip netip.Addr) bool {
-		return true // default allow all IPs
+		return false // default block all IPs
 	}
 
 	return server, nil
