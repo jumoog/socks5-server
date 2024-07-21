@@ -149,7 +149,7 @@ func (s *Server) ServeConn(conn net.Conn) error {
 	if s.IsDockerNetwork(ip) {
 		s.config.Logger.Printf("[INFO] socks: Connection from Docker IP address: %s", clientIP)
 	} else if s.IsTailScale(ip) {
-		s.config.Logger.Printf("[INFO] socks: Connection from Docker IP address: %s", clientIP)
+		s.config.Logger.Printf("[INFO] socks: Connection from Tailscale IP address: %s", clientIP)
 	} else if s.isIPAllowed(ip) {
 		s.config.Logger.Printf("[INFO] socks: Connection from allowed address: %s", clientIP)
 	} else {
