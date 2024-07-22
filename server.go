@@ -55,7 +55,7 @@ func main() {
 		server.SetIPWhitelist(whitelist)
 	}
 
-	logrus.Infof("Start listening proxy service on port %s\n", cfg.Port)
+	logrus.Infof("Start listening proxy service on port %s", cfg.Port)
 	if err := server.ListenAndServe("tcp", ":"+cfg.Port); err != nil {
 		logrus.Fatal(err)
 	}

@@ -142,25 +142,25 @@ func (s *Server) ServeConn(conn net.Conn) error {
 	// Check client IP against whitelist
 	clientIP, _, err := net.SplitHostPort(conn.RemoteAddr().String())
 	if err != nil {
-		s.config.Logger.Errorf("socks: Failed to get client IP address: %v", err)
+		s.config.Logger.Errorf("failed to get client IP address: %v", err)
 		return err
 	}
 	ip, _ := netip.ParseAddr(string(clientIP))
 	if s.IsDockerNetwork(ip) {
-		s.config.Logger.Infof("socks: Connection from Docker IP address: %s", clientIP)
+		s.config.Logger.Infof("connection from Docker IP address: %s", clientIP)
 	} else if s.IsTailScale(ip) {
-		s.config.Logger.Infof("socks: Connection from Tailscale IP address: %s", clientIP)
+		s.config.Logger.Infof("connection from Tailscale IP address: %s", clientIP)
 	} else if s.isIPAllowed(ip) {
-		s.config.Logger.Infof("socks: Connection from allowed address: %s", clientIP)
+		s.config.Logger.Infof("connection from allowed address: %s", clientIP)
 	} else {
-		s.config.Logger.Warnf("socks: Connection from not allowed IP address: %s", clientIP)
+		s.config.Logger.Warnf("connection from not allowed IP address: %s", clientIP)
 		return fmt.Errorf("connection from not allowed IP address")
 	}
 
 	// Read the version byte
 	version := []byte{0}
 	if _, err := bufConn.Read(version); err != nil {
-		s.config.Logger.Errorf("socks: Failed to get version byte: %v", err)
+		s.config.Logger.Errorf("failed to get version byte: %v", err)
 		return err
 	}
 

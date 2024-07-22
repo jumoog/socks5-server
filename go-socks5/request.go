@@ -122,7 +122,7 @@ func (s *Server) handleRequest(req *Request, conn conn) error {
 	// Resolve the address if we have a FQDN
 	dest := req.DestAddr
 	if dest.FQDN != "" {
-		s.config.Logger.Infof("trying to access: %v on port: %v", dest.FQDN, dest.Port)
+		s.config.Logger.Infof("requesting: %v on port: %v", dest.FQDN, dest.Port)
 		ctx_, addr, err := s.config.Resolver.Resolve(ctx, dest.FQDN)
 		if err != nil {
 			if err := sendReply(conn, hostUnreachable, nil); err != nil {
@@ -133,7 +133,7 @@ func (s *Server) handleRequest(req *Request, conn conn) error {
 		ctx = ctx_
 		dest.IP = addr
 	} else {
-		s.config.Logger.Infof("trying to access: %v on port: %v", dest.IP.String(), dest.Port)
+		s.config.Logger.Infof("requesting: %v on port: %v", dest.IP.String(), dest.Port)
 	}
 
 	// Apply any address rewrites
