@@ -1,13 +1,13 @@
 package main
 
 import (
-	"log"
 	"net/netip"
 	"os"
 
 	"jumoog/socks5-server/go-socks5"
 
 	"github.com/caarlos0/env/v11"
+	"github.com/sirupsen/logrus"
 )
 
 type params struct {
@@ -23,13 +23,11 @@ func main() {
 	cfg := params{}
 	err := env.Parse(&cfg)
 	if err != nil {
-		log.Printf("%+v\n", err)
+		logrus.Fatalf("%+v\n", err)
 	}
 
 	//Initialize socks5 config
-	socks5conf := &socks5.Config{
-		Logger: log.New(os.Stdout, "", log.LstdFlags),
-	}
+	socks5conf := &socks5.Config{}
 
 	if cfg.User+cfg.Password != "" {
 		creds := socks5.StaticCredentials{
@@ -45,7 +43,7 @@ func main() {
 
 	server, err := socks5.New(socks5conf)
 	if err != nil {
-		log.Fatal(err)
+		logrus.Fatal(err)
 	}
 
 	// Set IP whitelist
@@ -57,8 +55,8 @@ func main() {
 		server.SetIPWhitelist(whitelist)
 	}
 
-	log.Printf("Start listening proxy service on port %s\n", cfg.Port)
+	logrus.Infof("Start listening proxy service on port %s\n", cfg.Port)
 	if err := server.ListenAndServe("tcp", ":"+cfg.Port); err != nil {
-		log.Fatal(err)
+		logrus.Fatal(err)
 	}
 }
