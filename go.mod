@@ -1,6 +1,6 @@
 module jumoog/socks5-server
 
-go 1.21
+go 1.23
 
 require github.com/caarlos0/env/v11 v11.1.0
 
