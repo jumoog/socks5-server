@@ -1,4 +1,4 @@
-FROM golang:1.25.10 AS builder
+FROM golang:1.26.4 AS builder
 WORKDIR /go/src/github.com/jummog/socks5
 COPY . .
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o socks5 .
